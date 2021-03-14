@@ -1,0 +1,46 @@
+  name: GitHub Actions demo
+
+  on:
+  - push
+  - pull_request
+
+  jobs:
+    build:
+
+      runs-on: ubuntu-latest
+      strategy:
+        matrix:
+          python-version: 
+            - '3.8'
+
+      steps:
+        - uses: actions/checkout@v2
+        - name: Set up Python ${{ matrix.python-version }}
+          uses: actions/setup-python@v2
+          with:
+            python-version: ${{ matrix.python-version }}
+          
+        - name: Install dependencies
+          run: |
+            python -m pip install --upgrade pip
+            pip install flake8 pytest
+            if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        
+        - name: Lint with flake8
+          run: |
+            # stop the build if there are Python syntax errors or undefined names
+            flake8 --count --max-line-length=100 myQueue/ --statistics
+
+        - name: Test with pytest
+          run: |
+            pytest ./test --cov-report term-missing --cov=./myQueue/ -sv
+        
+        - name: install myQueue
+          run: |
+            pip install -e .
+
+        - name: verify installation
+          run: |
+            python -c "import myQueue; print(myQueue.__version__)"
+
+

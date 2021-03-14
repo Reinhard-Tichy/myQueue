@@ -33,6 +33,7 @@
 
         - name: Test with pytest
           run: |
+            tree -I .git
             pytest ./test --cov-report term-missing --cov=./myQueue/ -sv
         
         - name: install myQueue

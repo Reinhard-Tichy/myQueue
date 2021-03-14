@@ -29,7 +29,7 @@
         - name: Lint with flake8
           run: |
             # stop the build if there are Python syntax errors or undefined names
-            flake8 --count --ignore F403,F405 --max-line-length=127 myQueue/ --statistics
+            flake8 --count --ignore F403,F405,W504,E226 --max-line-length=127 myQueue/ --statistics
 
         - name: Test with pytest
           run: |
